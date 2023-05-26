@@ -1,99 +1,57 @@
 <template>
 	<div>
-		Account: {{ username }}
-		<button @click="logout">Sign Out</button>
-		<div>Budgets</div>
-		<ul>
-			<li v-for="budget in budgets">
-				<div :key="budget.id">{{ budget.name }} | {{ budget.amount }}</div>
-			</li>
-		</ul>
+		<section class="grid justify-center grid-cols-1 md:grid-cols-2 gap-4">
+			<AddBudgetForm />
+			<AddExpenseForm />
+		</section>
+		<section>
+			<div>Budgets</div>
+			<div class="grid grid-flow-col">
+				<div v-for="budget in budgetStore.budgets">
+					<BudgetItem :key="budget.id" :budget="budget" />
+				</div>
+			</div>
+		</section>
 
-		<form @submit.prevent="addBudget">
-			<input type="text" v-model="newBudgetName" placeholder="Budget Name" />
-			<input
-				type="text"
-				v-model="newBudgetAmount"
-				placeholder="Budget Amount"
+		<div v-if="expensesStore.expenses.length > 0">
+			<div>Expenses</div>
+			<Table
+				:showBudget="true"
+				:expenses="
+					expensesStore.expenses
+						.sort((a, b) => b.createdAt - a.createdAt)
+						.slice(0, 8)
+				"
 			/>
-			<button>Add Budget</button>
-		</form>
-		<div>Expenses</div>
-		<ul>
-			<li v-for="expense in expenses">
-				<div :key="expense.id">{{ expense.name }} | {{ expense.amount }}</div>
-			</li>
-		</ul>
+		</div>
 	</div>
 </template>
 
 <script setup>
-	definePageMeta({
-		middleware: ['auth']
-	})
+	import { useBudgetStore } from '@/stores/BudgetStore'
+	import { useExpensesStore } from '@/stores/ExpensesStore'
 
-	const client = useSupabaseAuthClient()
-	const user = useSupabaseUser()
+	const budgetStore = useBudgetStore()
+	const expensesStore = useExpensesStore()
 
-	const { data: username } = await useAsyncData('profiles', async () => {
-		const { data } = await client
-			.from('profiles')
-			.select('id,name')
-			.eq('user_id', user.value.id)
-		return data[0].name
-	})
+	const { pending: budgetsPending, data: budgets } = await useLazyAsyncData(
+		'budgets',
+		() => $fetch('/api/budgets', { headers: useRequestHeaders(['cookie']) })
+	)
+	const { pending: expensesPending, data: expenses } = await useLazyAsyncData(
+		'expenses',
+		() => $fetch('/api/expenses', { headers: useRequestHeaders(['cookie']) })
+	)
+	budgetStore.budgets = budgets.value
+	expensesStore.expenses = expenses.value
 
-	const { data: budgets } = await useAsyncData('budgets', async () => {
-		const { data } = await client
-			.from('budgets')
-			.select('id,name,amount')
-			.eq('user_id', user.value.id)
-		return data
-	})
-
-	const { data: expenses } = await useAsyncData('expenses', async () => {
-		const { data } = await client
-			.from('expenses')
-			.select('id,name,amount')
-			.eq('user_id', user.value.id)
-		return data
-	})
-
-	const newBudgetName = ref('')
-	const newBudgetAmount = ref('')
-
-	async function addBudget() {
-		try {
-			const { data } = await client
-				.from('budgets')
-				.upsert({
-					user_id: user.value.id,
-					name: newBudgetName.value,
-					amount: newBudgetAmount.value
-				})
-				.select('id , name , amount')
-				.single()
-
-			newBudgetName.value = ''
-			newBudgetAmount.value = ''
-			budgets.value.push(data)
-		} catch (error) {
-			console.error(error)
-		}
-	}
-
-	function logout() {
-		client.auth.signOut()
-	}
-	onMounted(() => {
-		watchEffect(() => {
-			if (user.value) {
-				navigateTo('/account')
-			} else {
-				navigateTo('/')
-			}
-		})
-	})
+	watchEffect(
+		() => {
+			budgetStore.budgets = budgets.value
+			expensesStore.expenses = expenses.value
+		},
+		{ immediate: true }
+	)
 </script>
 
 <style lang="scss" scoped></style>

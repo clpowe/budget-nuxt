@@ -23,10 +23,6 @@
 </template>
 
 <script setup>
-	definePageMeta({
-		middleware: ['auth']
-	})
-
 	const name = ref('')
 	const email = ref('')
 	const password = ref('')
@@ -38,7 +34,9 @@
 			email: email.value,
 			password: password.value
 		})
-		console.log('error', error)
+		if (error === null) {
+			navigateTo('/account')
+		}
 	}
 
 	async function signUp() {
