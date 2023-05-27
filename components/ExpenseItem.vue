@@ -1,5 +1,5 @@
 <template>
-	<td>{{ expense.name }}</td>
+	<th>{{ expense.name }}</th>
 	<td>{{ formatCurrency(expense.amount) }}</td>
 	<td>{{ formatDateToLocaleString(expense.created_at) }}</td>
 	<td v-if="showBudget">

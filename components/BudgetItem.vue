@@ -1,30 +1,18 @@
 <template>
-	<div class="card card-compact w-96 bg-base-100 shadow-xl p-4">
-		<div>{{ budget.name }}</div>
-		<div>{{ formatCurrency(budget.amount) }} budgeted</div>
-		<div
-			class="radial-progress text-primary"
-			:style="`--value:${Math.round(
-				(spent / budget.amount) * 100
-			)} ;--size:8rem;`"
+	<NuxtLink :to="`/budget/${budget.id}`">
+		<figure
+			class="card card-compact bg-base-100 shadow-xl p-4 flex items-center gap-2"
 		>
-			<span class="countdown font-mono text-4xl">
-				<span
-					:style="`--value:${Math.round((spent / budget.amount) * 100)}; `"
-				></span
-				>%
-			</span>
-			<!-- {{ formatPercentage(spent / budget.amount) }} -->
-		</div>
-		<!-- <progress :max="budget.amount" :value="spent">
-						 {{ formatPercentage(spent / budget.amount) }}
-					 </progress> -->
-		<div className="progress-text">
-			<small>{{ formatCurrency(spent) }}</small>
-			<small>{{ formatCurrency(budget.amount - spent) }}</small>
-		</div>
-		<NuxtLink class="btn" :to="`budget/${budget.id}`">View Details</NuxtLink>
-	</div>
+			<h4 class="font-bold">{{ budget.name }}</h4>
+
+			<ProgressCircle :spent="spent" :total="budget.amount" size="8" />
+
+			<div className="progress-text">
+				<p class="font-bold">Available</p>
+				<p class="text-xl">{{ formatCurrency(budget.amount - spent) }}</p>
+			</div>
+		</figure>
+	</NuxtLink>
 </template>
 
 <script setup lang="ts">

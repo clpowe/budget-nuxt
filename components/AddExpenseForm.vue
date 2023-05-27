@@ -1,7 +1,7 @@
 <template>
 	<div class="card card-compact bg-base-100 shadow-xl p-4">
-		<h2>Add Expense</h2>
-		<form @submit.prevent="addExpense" class="space-y-4">
+		<h2 class="text-3xl font-bold">Add Expense</h2>
+		<form @submit.prevent="addExpense" class="grid gap-3">
 			<div>
 				<label class="label" for="expenseName">
 					<span class="label-text">Expense Name</span>
@@ -41,7 +41,7 @@
 				</template>
 			</select>
 
-			<button class="btn">Add Expense</button>
+			<button class="btn btn-secondary w-40">Add Expense</button>
 		</form>
 	</div>
 </template>

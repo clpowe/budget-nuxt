@@ -1,6 +1,6 @@
 <template>
-	<div>
-		<table class="table w-full">
+	<div class="overflow-x-auto">
+		<table class="table table-zebra w-full">
 			<thead>
 				<tr>
 					<th

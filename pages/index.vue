@@ -1,23 +1,27 @@
 <template>
-	<div>
-		<form v-if="!isSignUp" @submit.prevent="signUp">
-			<input type="text" v-model="name" />
-			<input type="email" v-model="email" />
-			<input type="password" v-model="password" />
-			<button type="submit">
+	<div
+		class="grid h-screen w-screen place-content-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-500 to-cyan-600"
+	>
+		<form v-if="!isSignUp" @submit.prevent="signUp" class="grid">
+			<input type="text" v-model="name" placeholder="Enter Your" />
+			<input type="email" v-model="email" placeholder="Enter Email" />
+			<input type="password" v-model="password" placeholder="Enter Password" />
+			<button type="submit" class="btn btn-sm btn-secondary">
 				<span>Sign up</span>
 			</button>
 		</form>
-		<form v-else @submit.prevent="login">
-			<input type="email" v-model="email" />
-			<input type="password" v-model="password" />
-			<button type="submit">
+		<form v-else @submit.prevent="login" class="grid">
+			<input type="email" v-model="email" placeholder="Enter Email" />
+			<input type="password" v-model="password" placeholder="Enter Password" />
+			<button type="submit" class="btn btn-sm btn-secondary">
 				<span>Log in</span>
 			</button>
 		</form>
 		<button @click="isSignUp = !isSignUp">
 			<span v-show="isSignUp">Create a new account</span>
-			<span v-show="!isSignUp">Have an account? Log in instead</span>
+			<span v-show="!isSignUp"
+				>Have an account? <span class="font-bold">Log in instead</span></span
+			>
 		</button>
 	</div>
 </template>
@@ -28,15 +32,17 @@
 	const password = ref('')
 	const isSignUp = ref(false)
 	const client = useSupabaseAuthClient()
+	const router = useRouter()
 
 	async function login() {
 		const { user, error } = await client.auth.signInWithPassword({
 			email: email.value,
 			password: password.value
 		})
-		if (error === null) {
-			navigateTo('/account')
+		if (error) {
+			console.log(error)
 		}
+		navigateTo('/account/')
 	}
 
 	async function signUp() {
@@ -47,16 +53,14 @@
 		console.log('user', user)
 		console.log('error', error.message)
 	}
-
-	const user = useSupabaseUser()
-
-	onMounted(() => {
-		watchEffect(() => {
-			if (user.value) {
-				navigateTo('/account')
-			}
-		})
-	})
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+	input {
+		@apply input input-bordered w-full max-w-md;
+	}
+
+	form {
+		@apply grid gap-4;
+	}
+</style>

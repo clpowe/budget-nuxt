@@ -1,7 +1,7 @@
 <template>
 	<div class="card card-compact bg-base-100 shadow-xl p-4">
-		<h2>Add Budget</h2>
-		<form @submit.prevent="addBudget" class="space-y-4">
+		<h2 class="text-3xl font-bold">Add Budget</h2>
+		<form @submit.prevent="addBudget" class="grid gap-3">
 			<div>
 				<label class="label" for="budgetName">
 					<span class="label-text">Budget Name</span>
@@ -26,7 +26,7 @@
 					placeholder="Enter budget amount"
 				/>
 			</div>
-			<button class="btn">Add Budget</button>
+			<button class="btn btn-secondary w-32">Add Budget</button>
 		</form>
 	</div>
 </template>
@@ -67,4 +67,4 @@
 	}
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped></style>
