@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="relative">
     <section
       class="container mx-auto grid justify-center grid-cols-1 md:grid-cols-2 gap-4"
     >
@@ -27,24 +27,24 @@
       </div>
       <div
         ref="addBudgetDrawer"
-        class="absolute left-0 top-[64px] -translate-x-full p-4 bg-white h-full z-40 w-4/5 max-w-xl block md:hidden"
+        class="absolute left-0 top-0 p-4 bg-white h-full z-40 w-4/5 max-w-xl block md:hidden"
         @click="openAddBudget"
+        style="
+           {
+            transform: 'translateX(-100%)';
+          }
+        "
       >
         <AddBudgetForm />
       </div>
       <div class="hidden md:static md:translate-x-[0%] md:block md:w-full">
         <AddBudgetForm />
       </div>
-      <div
-        class="absolute hidden left-0 top-[64px] p-4 bg-white h-full z-40 w-3/4 max-w-xl drop-shadow-xl"
-      >
-        <AddExpenseForm />
-      </div>
     </section>
-    <section class="p-4 bg-secondary/20 w-full">
+    <section class="py-8 px-4 bg-secondary/20 w-full">
       <div class="container mx-auto">
         <h2 class="text-3xl font-bold mb-4">Budgets</h2>
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div v-for="budget in budgetStore.budgets">
             <BudgetItem :key="budget.id" :budget="budget" />
           </div>
@@ -52,7 +52,19 @@
       </div>
     </section>
 
-    <section class="mb-20 p-4 container mx-auto">
+    <section
+      class="mb-20 p-4 container mx-auto grid justify-center grid-cols-1 md:grid-cols-2 gap-4"
+    >
+      <div
+        ref="addExpenseDrawer"
+        class="absolute left-0 top-0 p-4 bg-white h-full z-40 w-3/4 max-w-xl drop-shadow-xl md:hidden"
+        @click="openAddExpense"
+      >
+        <AddExpenseForm />
+      </div>
+      <div class="hidden md:static md:translate-x-[0%] md:block md:w-full">
+        <AddExpenseForm />
+      </div>
       <div v-if="expensesStore?.expenses.length > 0">
         <h2 class="text-3xl font-bold mb-4">Expenses</h2>
         <Table
@@ -77,6 +89,7 @@ const budgetStore = useBudgetStore();
 const expensesStore = useExpensesStore();
 
 const addBudgetDrawer = ref();
+const addExpenseDrawer = ref();
 
 const { pending: budgetsPending, data: budgets } = await useAsyncData(
   "budgets",
@@ -91,9 +104,10 @@ expensesStore.expenses = expenses.value;
 
 const totalBudgeted = computed(() => {
   return budgets.value.reduce((acc, budget) => {
-    return (acc += budget.amount);
+    return (acc = acc + budget.amount);
   }, 0);
 });
+
 const totalSpent = computed(() => {
   return expenses.value.reduce((acc, expense) => {
     return (acc += expense.amount);
@@ -107,6 +121,8 @@ const { pending, data: username } = await useAsyncData("profiles", async () => {
     .eq("user_id", user.value.id);
   return data[0].name;
 });
+
+// Add Budget Drawer
 
 const openAddBudget = () => {
   animate(addBudgetDrawer.value, { transform: [null, "translateX(0%)"] });
@@ -125,6 +141,28 @@ watch(budgetDrawerToggle, () => {
     openAddBudget();
   } else {
     closeAddBudget();
+  }
+});
+
+// Add Expense Drawer
+
+const openExpenseBudget = () => {
+  animate(addExpenseDrawer.value, { transform: [null, "translateX(0%)"] });
+  document.body.style.overflow = "hidden";
+};
+
+const closeExpenseBudget = () => {
+  animate(addExpenseDrawer.value, { transform: [null, "translateX(-100%)"] });
+  document.body.style.overflow = "auto";
+};
+
+const expenseDrawerToggle = inject("expenseDrawerToggle");
+
+watch(expenseDrawerToggle, () => {
+  if (expenseDrawerToggle.value) {
+    openExpenseBudget();
+  } else {
+    closeExpenseBudget();
   }
 });
 

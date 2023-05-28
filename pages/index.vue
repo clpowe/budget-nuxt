@@ -32,10 +32,9 @@ const email = ref("");
 const password = ref("");
 const isSignUp = ref(false);
 const client = useSupabaseAuthClient();
-const router = useRouter();
 
 async function login() {
-  const { user, error } = await client.auth.signInWithPassword({
+  const { error } = await client.auth.signInWithPassword({
     email: email.value,
     password: password.value,
   });

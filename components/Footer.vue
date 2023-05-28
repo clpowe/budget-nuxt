@@ -6,7 +6,9 @@
       <button class="btn btn-secondary w-32" @click="toggleBudgetDrawer">
         Add Budget
       </button>
-      <button class="btn btn-secondary w-40">Add Expense</button>
+      <button class="btn btn-secondary w-40" @click="toggleExpenseDrawer">
+        Add Expense
+      </button>
     </div>
   </footer>
 </template>
@@ -15,8 +17,22 @@
 const budgetDrawerToggle = inject("budgetDrawerToggle");
 
 function toggleBudgetDrawer() {
+  if (expenseDrawerToggle.value) {
+    expenseDrawerToggle.value = false;
+    budgetDrawerToggle.value = !budgetDrawerToggle.value;
+    return;
+  }
   budgetDrawerToggle.value = !budgetDrawerToggle.value;
 }
-</script>
 
-<style scoped></style>
+const expenseDrawerToggle = inject("expenseDrawerToggle");
+
+function toggleExpenseDrawer() {
+  if (budgetDrawerToggle.value) {
+    budgetDrawerToggle.value = false;
+    expenseDrawerToggle.value = !expenseDrawerToggle.value;
+    return;
+  }
+  expenseDrawerToggle.value = !expenseDrawerToggle.value;
+}
+</script>

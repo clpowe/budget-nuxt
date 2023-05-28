@@ -10,6 +10,8 @@
 const user = useSupabaseUser();
 
 const budgetDrawerToggle = ref(false);
+const expenseDrawerToggle = ref(false);
 
-provide(/* key */ "budgetDrawerToggle", budgetDrawerToggle);
+provide("budgetDrawerToggle", budgetDrawerToggle);
+provide("expenseDrawerToggle", expenseDrawerToggle);
 </script>
