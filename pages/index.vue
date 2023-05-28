@@ -53,8 +53,18 @@ async function signUp() {
     email: email.value,
     password: password.value,
   });
-  console.log("user", user);
-  console.log("error", error.message);
+
+  if (user) {
+    const { data } = await client
+      .from("profiles")
+      .upsert({
+        user_id: user.value.id,
+        name: name.value,
+        id: user.value.id,
+      })
+      .select("id , name , user_id, created_at")
+      .single();
+  }
 }
 </script>
 
