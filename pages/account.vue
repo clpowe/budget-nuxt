@@ -4,24 +4,28 @@
       class="container mx-auto grid justify-center grid-cols-1 md:grid-cols-2 gap-4"
     >
       <div class="p-4 flex flex-col gap-6">
-        <h2 class="text-2xl font-bold">Hello, {{ username }}</h2>
-        <div class="mx-auto self-center">
-          <ProgressCircle
-            :spent="totalSpent"
-            :total="totalBudgeted"
-            :size="12"
-          />
-        </div>
-        <div class="flex w-full justify-between">
-          <div>
-            <h3 class="text-base">Spent</h3>
-            <p class="text-3xl font-bold">{{ formatCurrency(totalSpent) }}</p>
+        <h2 class="text-3xl font-bold">Hello, {{ username }}</h2>
+        <div class="flex flex-col gap-4 md:flex-row">
+          <div class="mx-auto self-center">
+            <ProgressCircle
+              :spent="totalSpent"
+              :total="totalBudgeted"
+              :size="12"
+            />
           </div>
-          <div>
-            <h3 class="text-base">Remaining</h3>
-            <p class="text-3xl font-bold">
-              {{ formatCurrency(totalBudgeted) }}
-            </p>
+          <div
+            class="flex w-full justify-between md:flex-col md:justify-center gap-4"
+          >
+            <div>
+              <h3 class="text-base">Spent</h3>
+              <p class="text-3xl font-bold">{{ formatCurrency(totalSpent) }}</p>
+            </div>
+            <div>
+              <h3 class="text-base">Remaining</h3>
+              <p class="text-3xl font-bold">
+                {{ formatCurrency(totalBudgeted) }}
+              </p>
+            </div>
           </div>
         </div>
       </div>

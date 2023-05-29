@@ -3,10 +3,16 @@
     class="bg-neutral text-neutral-content fixed bottom-0 w-full z-10 p-4"
   >
     <div class="container flex justify-between mx-auto">
-      <button class="btn btn-secondary w-32" @click="toggleBudgetDrawer">
+      <button
+        class="btn btn-secondary w-32 block md:hidden"
+        @click="toggleBudgetDrawer"
+      >
         Add Budget
       </button>
-      <button class="btn btn-secondary w-40" @click="toggleExpenseDrawer">
+      <button
+        class="btn btn-secondary w-40 block md:hidden"
+        @click="toggleExpenseDrawer"
+      >
         Add Expense
       </button>
     </div>
