@@ -2,6 +2,10 @@
   <div
     class="grid h-screen w-screen place-content-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-500 to-cyan-600"
   >
+    <div class="mb-6 grid gap-2 justify-items-center">
+      <img src="/logo.svg" height="80" alt="" class="w-20 h-20" />
+      <img src="/name.svg" height="48" alt="" class="h-12" />
+    </div>
     <form v-if="!isSignUp" @submit.prevent="signUp" class="grid">
       <input type="text" v-model="name" placeholder="Enter Your" />
       <input type="email" v-model="email" placeholder="Enter Email" />

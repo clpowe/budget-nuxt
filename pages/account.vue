@@ -76,7 +76,7 @@
           :showBudget="true"
           :expenses="
             expensesStore.expenses
-              .sort((a, b) => b.createdAt - a.createdAt)
+              .sort((a, b) => b?.createdAt - a?.createdAt)
               .slice(0, 8)
           "
         />
@@ -96,11 +96,14 @@ const expensesStore = useExpensesStore();
 const addBudgetDrawer = ref();
 const addExpenseDrawer = ref();
 
-const { pending: budgetsPending, data: budgets } = await useAsyncData(
+const { data: budgets } = useNuxtData("budgets");
+const { data: expenses } = useNuxtData("expenses");
+
+const { pending: budgetsPending, data: bud } = await useAsyncData(
   "budgets",
   () => $fetch("/api/budgets", { headers: useRequestHeaders(["cookie"]) })
 );
-const { pending: expensesPending, data: expenses } = await useAsyncData(
+const { pending: expensesPending, data: exp } = await useAsyncData(
   "expenses",
   () => $fetch("/api/expenses", { headers: useRequestHeaders(["cookie"]) })
 );

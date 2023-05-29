@@ -30,8 +30,6 @@
 import { Expense } from "~/types";
 const props = defineProps<{
   showBudget: boolean;
-  expenses: {
-    type: Expense;
-  };
+  expenses: Expense[];
 }>();
 </script>
