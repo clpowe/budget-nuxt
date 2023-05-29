@@ -49,22 +49,29 @@ definePageMeta({
 });
 
 async function signUp() {
-  const { user, error } = await client.auth.signUp({
+  const { data: userData, error } = await client.auth.signUp({
     email: email.value,
     password: password.value,
   });
-
-  if (user) {
-    const { data } = await client
-      .from("profiles")
-      .upsert({
-        user_id: user.value.id,
-        name: name.value,
-        id: user.value.id,
-      })
-      .select("id , name , user_id, created_at")
-      .single();
+  if (error) {
+    console.error(error);
+    throw new Error(error);
   }
+
+  try {
+    await client.from("profiles").insert([
+      {
+        user_id: userData.user.id,
+        name: name.value,
+        id: userData.user.id,
+      },
+    ]);
+  } catch (error) {
+    console.error(error);
+    throw new Error(error);
+  }
+
+  navigateTo("/account/");
 }
 </script>
 

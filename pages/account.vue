@@ -9,7 +9,7 @@
           <ProgressCircle
             :spent="totalSpent"
             :total="totalBudgeted"
-            size="12"
+            :size="12"
           />
         </div>
         <div class="flex w-full justify-between">
@@ -29,11 +29,9 @@
         ref="addBudgetDrawer"
         class="absolute left-0 top-0 p-4 bg-white h-full z-40 w-4/5 max-w-xl block md:hidden"
         @click="openAddBudget"
-        style="
-           {
-            transform: 'translateX(-100%)';
-          }
-        "
+        :style="{
+          transform: 'translateX(-100%)',
+        }"
       >
         <AddBudgetForm />
       </div>
@@ -59,6 +57,9 @@
         ref="addExpenseDrawer"
         class="absolute left-0 top-0 p-4 bg-white h-full z-40 w-3/4 max-w-xl drop-shadow-xl md:hidden"
         @click="openAddExpense"
+        :style="{
+          transform: 'translateX(-100%)',
+        }"
       >
         <AddExpenseForm />
       </div>
@@ -114,12 +115,18 @@ const totalSpent = computed(() => {
   }, 0);
 });
 
+const user = useSupabaseUser();
+const client = useSupabaseAuthClient();
+console.log(user.value.id);
+
 const { pending, data: username } = await useAsyncData("profiles", async () => {
-  const { data } = await client
+  const { data, error } = await client
     .from("profiles")
-    .select("id,name")
-    .eq("user_id", user.value.id);
-  return data[0].name;
+    .select("name")
+    .eq("user_id", "59e06200-c7af-4a0e-b4c7-fd9c88fa0440")
+    .single();
+
+  return data.name;
 });
 
 // Add Budget Drawer
