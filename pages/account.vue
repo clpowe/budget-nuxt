@@ -124,13 +124,12 @@ const totalSpent = computed(() => {
 
 const user = useSupabaseUser();
 const client = useSupabaseAuthClient();
-console.log(user.value.id);
 
 const { pending, data: username } = await useAsyncData("profiles", async () => {
   const { data, error } = await client
     .from("profiles")
     .select("name")
-    .eq("user_id", "59e06200-c7af-4a0e-b4c7-fd9c88fa0440")
+    .eq("user_id", user.value.id)
     .single();
 
   return data.name;

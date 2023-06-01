@@ -10,24 +10,26 @@
       </button>
     </div>
   </div>
-
-  <ProgressCircle :spent="100" :total="200" :size="12" />
-
-  <div class="flex w-full justify-between md:flex-col md:justify-center gap-4">
-    <div>
-      <h3 class="text-base">Spent</h3>
-      <p class="text-3xl font-bold">{{ formatCurrency(spent) }}</p>
-    </div>
-    <div>
-      <h3 class="text-base">Remaining</h3>
-      <p class="text-3xl font-bold">
-        {{ formatCurrency(budget.amount - spent) }}
-      </p>
+  <div class="container mx-auto p-4">
+    <ProgressCircle :spent="100" :total="200" :size="12" />
+    <div
+      class="flex w-full justify-between md:flex-col md:justify-center gap-4"
+    >
+      <div>
+        <h3 class="text-base">Total Spent</h3>
+        <p class="text-3xl font-bold">{{ formatCurrency(spent) }}</p>
+      </div>
+      <div>
+        <h3 class="text-base">Amount Remaining</h3>
+        <p class="text-3xl font-bold">
+          {{ formatCurrency(budget.amount - spent) }}
+        </p>
+      </div>
     </div>
   </div>
-  <Chart />
-  <AddExpenseForm :bid="budget?.id" :bn="budget?.name" />
-  <section class="mb-20">
+
+  <section class="container mx-auto p-4 mb-20 grid gap-4">
+    <AddExpenseForm :bid="budget?.id" :bn="budget?.name" />
     <div v-if="expenses.length > 0">
       <div class="text-3xl font-bold">Expenses</div>
       <Table
@@ -79,6 +81,23 @@ async function handleDelete(id: string) {
   await budgetStore.deleteBudget(id);
   navigateTo("/account");
 }
+
+const chart = computed(() => {
+  const days = new Set();
+  expenses.value.forEach((exp) => days.add(new Date(exp.created_at).getDay()));
+  function logSetElements(value1: any, value2: any, set: any) {
+    const amount = expenses.value.reduce((acc: any, exp) => {
+      if (new Date(exp.created_at).getDay() === value1) {
+        acc = acc += exp.amount;
+        return acc;
+      }
+    }, 0);
+    set[value1] = amount;
+  }
+  days.forEach(logSetElements);
+  return days;
+});
+console.log(chart.value);
 </script>
 
 <style scoped></style>
