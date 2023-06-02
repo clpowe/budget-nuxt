@@ -55,6 +55,13 @@ const budget: Ref<Budget | any> = ref();
 
 budget.value = budgetStore.budgets.find((b) => b.id == route.params.id);
 
+if (!budget.value) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: "Check your couch cousions I cant find the envelope here",
+  });
+}
+
 const expenses = computed({
   get() {
     return expensesStore.expenses.filter(
@@ -97,7 +104,4 @@ const chart = computed(() => {
   days.forEach(logSetElements);
   return days;
 });
-console.log(chart.value);
 </script>
-
-<style scoped></style>
