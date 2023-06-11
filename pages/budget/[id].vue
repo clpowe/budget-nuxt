@@ -58,7 +58,7 @@ budget.value = budgetStore.budgets.find((b) => b.id == route.params.id);
 if (!budget.value) {
   throw createError({
     statusCode: 404,
-    statusMessage: "Check your couch cousions I cant find the envelope here",
+    statusMessage: "Check your sofa cushions I cant find the envelope here",
   });
 }
 
