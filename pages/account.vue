@@ -46,16 +46,22 @@
     <section class="py-8 px-4 bg-secondary/20 w-full">
       <div class="container mx-auto">
         <h2 class="text-3xl font-bold mb-4">Budgets</h2>
-        <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div
+          v-if="budgetStore.budgets?.length > 0"
+          class="grid grid-cols-2 gap-4 md:grid-cols-4"
+        >
           <div v-for="budget in budgetStore.budgets">
             <BudgetItem :key="budget.id" :budget="budget" />
           </div>
+        </div>
+        <div class="grid place-content-center" v-else>
+          <p>Well it's about time we got started</p>
         </div>
       </div>
     </section>
 
     <section
-      class="mb-20 p-4 container mx-auto grid justify-center grid-cols-1 md:grid-cols-2 gap-4"
+      class="mb-20 p-4 container mx-auto grid justify-center grid-cols-1 md:grid-cols-3 gap-4"
     >
       <div
         ref="addExpenseDrawer"
@@ -80,6 +86,9 @@
               .slice(0, 8)
           "
         />
+      </div>
+      <div class="grid place-content-center md:col-span-2" v-else>
+        <p>You appear to have spent no money</p>
       </div>
     </section>
   </div>

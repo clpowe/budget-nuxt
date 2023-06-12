@@ -6,13 +6,15 @@
           <div>
             <Logo />
           </div>
-          <div>
+          <div class="hidden md:block">
             <TitleText />
           </div>
         </NuxtLink>
       </div>
 
-      <button @click="logout" class="btn btn-secondary">Sign Out</button>
+      <button @click="logout" class="btn btn-primary text-primary-content">
+        Sign Out
+      </button>
     </div>
   </nav>
 </template>

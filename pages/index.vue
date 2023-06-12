@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid h-screen w-screen place-content-center p-4 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-500 to-cyan-600"
+    class="grid h-screen w-screen place-content-center p-4 bg-neutral text-content-neutral"
   >
     <div class="mb-8 grid gap-4 justify-items-center">
       <div>
@@ -15,7 +15,7 @@
       <input type="email" v-model="email" placeholder="Enter Email" />
       <input type="password" v-model="password" placeholder="Enter Password" />
       <p>{{ error }}</p>
-      <button type="submit" class="btn btn-sm btn-secondary">
+      <button type="submit" class="btn btn-primary">
         <span>Sign up</span>
       </button>
     </form>
@@ -23,13 +23,15 @@
       <input type="email" v-model="email" placeholder="Enter Email" />
       <input type="password" v-model="password" placeholder="Enter Password" />
       <p>{{ error }}</p>
-      <button type="submit" class="btn btn-sm btn-secondary">
-        <span>Log in</span>
+      <button type="submit" class="btn btn-primary">
+        <span class="text-primary-content">Log in</span>
       </button>
     </form>
-    <button @click="isSignUp = !isSignUp">
-      <span v-show="isSignUp">Create a new account</span>
-      <span v-show="!isSignUp"
+    <button @click="isSignUp = !isSignUp" class="clo text-neutral-content">
+      <span v-show="isSignUp" class="text-neutral-content"
+        >Create a new account</span
+      >
+      <span v-show="!isSignUp" class="text-neutral-content"
         >Have an account? <span class="font-bold">Log in instead</span></span
       >
     </button>

@@ -1,6 +1,6 @@
 <template>
-  <Navigation data-theme="light" />
-  <div data-theme="light" class="">
+  <Navigation data-theme="emerald" />
+  <div data-theme="emerald" class="">
     <slot />
   </div>
   <Footer class="z-40" />
